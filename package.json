@@ -1,12 +1,10 @@
 {
-  "name": "@figma/my-make-file",
-  "private": true,
-  "version": "0.0.1",
-  "type": "module",
-  "scripts": {
-    "build": "vite build",
-    "dev": "vite"
-  },
+  "name": "raketakcrush",
+  "version": "1.0.0",
+  "description": "Crash game frontend",
+  "scripts": {},
+  "license": "MIT"
+}
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
