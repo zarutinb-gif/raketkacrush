@@ -1,7 +1,15 @@
+import express from "express";
 import fs from "fs";
+
+const app = express();
+app.use(express.json());
+
+app.use(express.static("."));
+
 import TelegramBot from "node-telegram-bot-api";
 
-// Ручная загрузка .env
+app.use(express.static(".")); 
+
 const env = fs.readFileSync(".env", "utf8")
   .split("\n")
   .filter(Boolean)
@@ -29,10 +37,7 @@ bot.on("message", (msg) => {
     }
   });
 });
-import express from "express";
-import fs from "fs";
 
-const app = express();
 app.use(express.json());
 
 const ADMIN_PASSWORD = "12345"; // 
