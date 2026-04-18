@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Админ панель</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #111; color: #fff; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; }
+    .panel { display: none; }
+  </style>
+</head>
+<body>
+
+  <h2>Вход в админ‑панель</h2>
+
+  <input id="password" type="password" placeholder="Введите пароль">
+  <button onclick="login()">Войти</button>
+
+  <div id="panel" class="panel">
+    <h2>Админ‑панель</h2>
+
+    <button onclick="loadUsers()">Показать всех пользователей</button>
+    <div id="users"></div>
+
+    <h3>Изменить баланс</h3>
+    <input id="uid" placeholder="ID пользователя">
+    <input id="amount" placeholder="Сумма (+/-)">
+    <button onclick="changeBalance()">Изменить</button>
+  </div>
+
+<script>
+function login() {
+  const password = document.getElementById("password").value;
+
+  fetch("/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.ok) {
+      document.getElementById("panel").style.display = "block";
+    } else {
+      alert("Неверный пароль");
+    }
+  });
+}
+
+function loadUsers() {
+  fetch("/admin/users")
+    .then(r => r.json())
+    .then(users => {
+      let html = "";
+      users.forEach(u => {
+        html += `<p>ID: ${u.id} | Баланс: ${u.balance}</p>`;
+      });
+      document.getElementById("users").innerHTML = html;
+    });
+}
+
+function changeBalance() {
+  const id = document.getElementById("uid").value;
+  const amount = Number(document.getElementById("amount").value);
+
+  fetch("/admin/balance", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, amount })
+  })
+  .then(r => r.json())
+  .then(d => alert(d.message));
+}
+</script>
+
+</body>
+</html>
